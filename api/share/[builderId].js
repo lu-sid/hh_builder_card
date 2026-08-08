@@ -1,43 +1,73 @@
-export default function handler(req, res) {
-  try {
-    const {
-      image,
-      builderId,
-      name,
-    } = req.query;
+import { list } from "@vercel/blob";
 
-    if (!image) {
+export default async function handler(req, res) {
+  try {
+    const builderId =
+      req.query.builderId;
+
+    if (!builderId) {
       return res.status(400).send(
-        "Builder Card image is missing."
+        "Builder ID is missing."
       );
     }
 
     /*
-     * Decode values safely.
+     * Only allow safe Builder IDs.
      */
 
-    const imageUrl =
-      decodeURIComponent(image);
-
-    const safeBuilderId =
+    const safeId = String(
       builderId
-        ? decodeURIComponent(builderId)
-        : "HH26-BUILDER";
+    ).replace(
+      /[^a-zA-Z0-9_-]/g,
+      ""
+    );
 
-    const builderName =
-      name
-        ? decodeURIComponent(name)
-        : "HH Goa Builder";
-
-    const title =
-      `${builderName} — HH Goa 2026 Builder Card`;
-
-    const description =
-      `I just created my HH Goa 2026 Builder Card! Create yours at hh-builder-card.vercel.app`;
+    if (!safeId) {
+      return res.status(400).send(
+        "Invalid Builder ID."
+      );
+    }
 
     /*
-     * Escape HTML so query values
-     * cannot break the page.
+     * Find the uploaded Builder Card
+     * inside Vercel Blob.
+     */
+
+    const result = await list({
+      prefix:
+        `builder-cards/${safeId}.png`,
+    });
+
+    const blob =
+      result.blobs?.find(
+        (item) =>
+          item.pathname ===
+          `builder-cards/${safeId}.png`
+      );
+
+    if (!blob) {
+      return res.status(404).send(
+        "Builder Card not found."
+      );
+    }
+
+    const imageUrl =
+      blob.url;
+
+    /*
+     * ==========================================
+     * PAGE INFORMATION
+     * ==========================================
+     */
+
+    const title =
+      "HH Goa 2026 Builder Card";
+
+    const description =
+      "I just created my HH Goa 2026 Builder Card. Create yours and join the frame.";
+
+    /*
+     * Escape HTML values.
      */
 
     function escapeHtml(value) {
@@ -58,6 +88,12 @@ export default function handler(req, res) {
     const safeImage =
       escapeHtml(imageUrl);
 
+    /*
+     * ==========================================
+     * SHARE PAGE
+     * ==========================================
+     */
+
     const html = `
 <!DOCTYPE html>
 
@@ -74,7 +110,9 @@ export default function handler(req, res) {
     content="${safeDescription}"
   />
 
-  <!-- Open Graph -->
+  <!-- ================================
+       OPEN GRAPH
+  ================================= -->
 
   <meta
     property="og:type"
@@ -97,25 +135,18 @@ export default function handler(req, res) {
   />
 
   <meta
-    property="og:image:alt"
-    content="HH Goa 2026 Builder Card"
-  />
-
-  <meta
     property="og:image:type"
     content="image/png"
   />
 
   <meta
-    property="og:url"
-    content="https://hh-builder-card.vercel.app/api/share?image=${encodeURIComponent(
-      imageUrl
-    )}&builderId=${encodeURIComponent(
-      safeBuilderId
-    )}"
+    property="og:image:alt"
+    content="HH Goa 2026 Builder Card"
   />
 
-  <!-- X / Twitter -->
+  <!-- ================================
+       X / TWITTER
+  ================================= -->
 
   <meta
     name="twitter:card"
@@ -151,36 +182,55 @@ export default function handler(req, res) {
     body {
       margin: 0;
       min-height: 100vh;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #F7F1DF;
-      font-family: Arial, sans-serif;
-      color: #111111;
+
       padding: 30px;
+
+      background: #F7F1DF;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      color: #111111;
     }
 
     .container {
       width: 100%;
-      max-width: 720px;
+      max-width: 700px;
+
       text-align: center;
     }
 
     .brand {
       display: inline-block;
-      background: #086B3C;
-      color: #F3E600;
+
       padding: 10px 18px;
+
+      background: #086B3C;
+
+      color: #F3E600;
+
       font-size: 13px;
+
       font-weight: 900;
+
       letter-spacing: 4px;
-      margin-bottom: 24px;
+
+      margin-bottom: 25px;
     }
 
     .card {
+      padding: 10px;
+
       background: white;
-      padding: 12px;
+
       border: 3px solid #111111;
+
       box-shadow:
         10px 10px 0 #FF087F,
         18px 18px 0 #F3E600;
@@ -188,35 +238,51 @@ export default function handler(req, res) {
 
     img {
       display: block;
+
       width: 100%;
+
       height: auto;
     }
 
     h1 {
-      margin: 40px 0 10px;
+      margin-top: 40px;
+
       font-size: 28px;
+
       font-weight: 900;
+
       text-transform: uppercase;
     }
 
     p {
-      margin: 0;
-      font-size: 14px;
+      font-size: 13px;
+
       font-weight: 700;
-      opacity: 0.6;
+
+      opacity: 0.55;
     }
 
     a {
       display: inline-block;
-      margin-top: 24px;
+
+      margin-top: 20px;
+
       padding: 14px 24px;
+
       background: #FF087F;
+
       color: white;
-      text-decoration: none;
-      font-weight: 900;
-      text-transform: uppercase;
+
       border: 3px solid #111111;
-      box-shadow: 5px 5px 0 #086B3C;
+
+      box-shadow:
+        5px 5px 0 #086B3C;
+
+      text-decoration: none;
+
+      font-weight: 900;
+
+      text-transform: uppercase;
     }
 
   </style>
@@ -248,8 +314,10 @@ export default function handler(req, res) {
       #FrameInGoa · HH Goa 2026
     </p>
 
-    <a href="https://hh-builder-card.vercel.app/">
-      Create Your Own →
+    <a
+      href="https://hh-builder-card.vercel.app/"
+    >
+      CREATE YOUR OWN →
     </a>
 
   </main>
@@ -265,8 +333,7 @@ export default function handler(req, res) {
     );
 
     /*
-     * Allow X and other crawlers to
-     * fetch the preview.
+     * Important for social crawlers.
      */
 
     res.setHeader(
@@ -274,7 +341,9 @@ export default function handler(req, res) {
       "public, max-age=300, s-maxage=3600"
     );
 
-    return res.status(200).send(html);
+    return res
+      .status(200)
+      .send(html);
 
   } catch (error) {
     console.error(
@@ -283,7 +352,7 @@ export default function handler(req, res) {
     );
 
     return res.status(500).send(
-      "Unable to create share page."
+      "Unable to create Builder Card share page."
     );
   }
 }

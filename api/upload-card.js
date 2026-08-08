@@ -19,86 +19,57 @@ export default async function handler(req, res) {
       });
     }
 
-    /*
-     * Make sure this is a PNG data URL.
-     */
-
-    if (
-      !image.startsWith(
-        "data:image/png;base64,"
-      )
-    ) {
+    if (!image.startsWith("data:image/png;base64,")) {
       return res.status(400).json({
         error: "Invalid card image.",
       });
     }
 
-    /*
-     * Remove the data URL prefix.
-     */
+    const base64Image = image.replace(
+      /^data:image\/png;base64,/,
+      ""
+    );
 
-    const base64Image =
-      image.replace(
-        /^data:image\/png;base64,/,
-        ""
-      );
+    const buffer = Buffer.from(
+      base64Image,
+      "base64"
+    );
 
-    /*
-     * Convert base64 → Buffer
-     */
-
-    const buffer =
-      Buffer.from(
-        base64Image,
-        "base64"
-      );
-
-    /*
-     * Prevent unnecessarily huge uploads.
-     */
-
-    if (
-      buffer.length >
-      5 * 1024 * 1024
-    ) {
+    if (buffer.length > 5 * 1024 * 1024) {
       return res.status(400).json({
-        error:
-          "Builder Card image is too large.",
+        error: "Builder Card image is too large.",
       });
     }
 
-    /*
-     * Generate a safe filename.
-     */
+    const safeId = String(
+      builderId || "HH26-BUILDER"
+    ).replace(
+      /[^a-zA-Z0-9_-]/g,
+      ""
+    );
 
-    const safeId =
-      String(
-        builderId || "builder"
-      ).replace(
-        /[^a-zA-Z0-9_-]/g,
-        ""
-      );
+    /*
+     * IMPORTANT:
+     * Keep the filename predictable.
+     *
+     * This lets /api/share/[builderId]
+     * find the correct image later.
+     */
 
     const filename =
-      `builder-cards/${safeId}-${Date.now()}.png`;
+      `builder-cards/${safeId}.png`;
 
-    /*
-     * Upload to public Vercel Blob.
-     */
+    const blob = await put(
+      filename,
+      buffer,
+      {
+        access: "public",
 
-    const blob =
-      await put(
-        filename,
-        buffer,
-        {
-          access: "public",
+        contentType: "image/png",
 
-          contentType:
-            "image/png",
-
-          addRandomSuffix: false,
-        }
-      );
+        addRandomSuffix: false,
+      }
+    );
 
     console.log(
       "Builder Card uploaded:",
@@ -108,6 +79,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       imageUrl: blob.url,
+      builderId: safeId,
     });
 
   } catch (error) {

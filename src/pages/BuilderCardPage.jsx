@@ -108,7 +108,7 @@ async function shareCard() {
   try {
     /*
      * ==========================================
-     * 1. GENERATE BUILDER CARD PNG
+     * 1. GENERATE THE ACTUAL CARD IMAGE
      * ==========================================
      */
 
@@ -117,7 +117,7 @@ async function shareCard() {
 
     /*
      * ==========================================
-     * 2. UPLOAD CARD TO VERCEL BLOB
+     * 2. UPLOAD IMAGE TO VERCEL BLOB
      * ==========================================
      */
 
@@ -137,7 +137,6 @@ async function shareCard() {
 
             builderId:
               state.builderId,
-
           }),
         }
       );
@@ -152,18 +151,9 @@ async function shareCard() {
       );
     }
 
-    const imageUrl =
-      uploadData.imageUrl;
-
-    if (!imageUrl) {
-      throw new Error(
-        "No image URL returned."
-      );
-    }
-
     /*
      * ==========================================
-     * 3. CREATE SHAREABLE PAGE URL
+     * 3. CLEAN SHARE URL
      * ==========================================
      */
 
@@ -173,21 +163,13 @@ async function shareCard() {
         "HH26-BUILDER"
       );
 
-    const name =
-      encodeURIComponent(
-        state.formData?.name ||
-        "HH Goa Builder"
-      );
-
     const shareUrl =
-      `${window.location.origin}/api/share` +
-      `?image=${encodeURIComponent(imageUrl)}` +
-      `&builderId=${builderId}` +
-      `&name=${name}`;
+      `${window.location.origin}` +
+      `/api/share/${builderId}`;
 
     /*
      * ==========================================
-     * 4. DOWNLOAD CARD AS BACKUP
+     * 4. DOWNLOAD CARD
      * ==========================================
      */
 
@@ -209,23 +191,16 @@ async function shareCard() {
 
     /*
      * ==========================================
-     * 5. CREATE PRE-FILLED X POST
+     * 5. CLEAN X CAPTION
      * ==========================================
      */
 
-
-      const text =
-        "I’m in the frame. Are you?\n\n" +
-        "Just created my HackerHouse Goa 2026 Builder ID.\n\n" +
-        "Ideas. People. Building. Goa.\n\n" +
-        "Create yours → https://hh-builder-card.vercel.app/\n\n" +
-        "#FrameInGoa #HHGoa2026"
-        " ";
-
-    const xUrl =
-      `https://x.com/intent/post` +
-      `?text=${encodeURIComponent(text)}` +
-      `&url=${encodeURIComponent(shareUrl)}`;
+    const text =
+      "I’m in the frame. Are you?\n\n" +
+      "Just created my HH Goa 2026 Builder ID.\n\n" +
+      "Ideas. People. Building. Goa.\n\n" +
+      "Create yours → https://hh-builder-card.vercel.app/\n\n" +
+      "#FrameInGoa #HHGoa2026";
 
     /*
      * ==========================================
@@ -233,7 +208,13 @@ async function shareCard() {
      * ==========================================
      */
 
-    window.location.href = xUrl;
+    const xUrl =
+      `https://x.com/intent/post` +
+      `?text=${encodeURIComponent(text)}` +
+      `&url=${encodeURIComponent(shareUrl)}`;
+
+    window.location.href =
+      xUrl;
 
   } catch (error) {
     console.error(
