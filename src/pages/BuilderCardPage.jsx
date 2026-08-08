@@ -100,140 +100,90 @@ function BuilderCardPage() {
    * ==========================================
    */
 
-  async function shareCard() {
-    if (sharing || downloading) return;
+async function shareCard() {
+  if (sharing || downloading) return;
 
-    setSharing(true);
+  setSharing(true);
 
-    try {
-      /*
-       * Generate the Builder Card PNG
-       */
+  try {
+    const dataUrl = await createCardImage();
 
-      const dataUrl =
-        await createCardImage();
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
 
-      /*
-       * Convert data URL → Blob
-       */
+    const fileName =
+      `${state.builderId || "HH-Goa-Builder-Card"}.png`;
 
-      const response =
-        await fetch(dataUrl);
-
-      const blob =
-        await response.blob();
-
-      const fileName =
-        `${state.builderId || "HH-Goa-Builder-Card"}.png`;
-
-      const file =
-        new File(
-          [blob],
-          fileName,
-          {
-            type: "image/png",
-          }
-        );
-
-      /*
-       * ======================================
-       * MOBILE / MODERN BROWSERS
-       * ======================================
-       */
-
-      if (
-        navigator.share &&
-        navigator.canShare &&
-        navigator.canShare({
-          files: [file],
-        })
-      ) {
-        await navigator.share({
-          title:
-            "HH Goa 2026 Builder Card",
-
-          text:
-            "I just created my HH Goa 2026 Builder Card! 🌴\n\n#FrameInGoa #HHGoa2026",
-
-          files: [file],
-        });
-
-        return;
+    const file = new File(
+      [blob],
+      fileName,
+      {
+        type: "image/png",
       }
+    );
 
-      /*
-       * ======================================
-       * FALLBACK
-       * ======================================
-       */
+    const text =
+      "I just created my HH Goa 2026 Builder Card! 🌴\n\n#FrameInGoa #HHGoa2026";
 
-      /*
-       * If the browser doesn't support
-       * sharing files, download the image
-       * and open X.
-       */
+    /*
+     * PHONE / BROWSER WITH FILE SHARING
+     */
 
-      const link =
-        document.createElement("a");
+    if (
+      navigator.share &&
+      navigator.canShare &&
+      navigator.canShare({
+        files: [file],
+      })
+    ) {
+      await navigator.share({
+        title: "HH Goa 2026 Builder Card",
+        text,
+        files: [file],
+      });
 
-      link.download = fileName;
-
-      link.href = dataUrl;
-
-      document.body.appendChild(link);
-
-      link.click();
-
-      document.body.removeChild(link);
-
-      /*
-       * Open X compose window.
-       */
-
-      const text =
-        "I just created my HH Goa 2026 Builder Card! 🌴\n\n#FrameInGoa #HHGoa2026";
-
-      const xUrl =
-        `https://x.com/intent/post?text=${encodeURIComponent(
-          text
-        )}`;
-
-      window.open(
-        xUrl,
-        "_blank",
-        "noopener,noreferrer"
-      );
-
-      alert(
-        "Your Builder Card has been downloaded. Attach it to your X post!"
-      );
-
-    } catch (error) {
-      /*
-       * User cancelled the share sheet.
-       * Don't show an error for that.
-       */
-
-      if (
-        error?.name ===
-        "AbortError"
-      ) {
-        return;
-      }
-
-      console.error(
-        "Share error:",
-        error
-      );
-
-      alert(
-        "Unable to share the Builder Card."
-      );
-
-    } finally {
-      setSharing(false);
+      return;
     }
+
+    /*
+     * DESKTOP FALLBACK
+     */
+
+    const link = document.createElement("a");
+
+    link.href = dataUrl;
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    /*
+     * Give the browser time to start the download
+     * before opening X.
+     */
+
+    setTimeout(() => {
+      window.location.href =
+        `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+    }, 500);
+
+  } catch (error) {
+
+    if (error?.name === "AbortError") {
+      return;
+    }
+
+    console.error("Share error:", error);
+
+    alert(
+      "Unable to share the Builder Card."
+    );
+
+  } finally {
+    setSharing(false);
   }
+}
 
   return (
     <div
