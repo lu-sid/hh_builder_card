@@ -100,74 +100,153 @@ function BuilderCardPage() {
    * ==========================================
    */
 
-  async function shareCard() {
-    if (sharing || downloading) return;
+async function shareCard() {
+  if (sharing || downloading) return;
 
-    setSharing(true);
+  setSharing(true);
 
-    try {
-      /*
-       * Generate Builder Card
-       */
+  try {
+    /*
+     * ==========================================
+     * 1. GENERATE BUILDER CARD PNG
+     * ==========================================
+     */
 
-      const dataUrl =
-        await createCardImage();
+    const dataUrl =
+      await createCardImage();
 
-      const fileName =
-        `${state.builderId || "HH-Goa-Builder-Card"}.png`;
+    /*
+     * ==========================================
+     * 2. UPLOAD CARD TO VERCEL BLOB
+     * ==========================================
+     */
 
-      /*
-       * Automatically download the card
-       */
+    const uploadResponse =
+      await fetch(
+        "/api/upload-card",
+        {
+          method: "POST",
 
-      const link =
-        document.createElement("a");
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-      link.href = dataUrl;
-      link.download = fileName;
+          body: JSON.stringify({
+            image: dataUrl,
 
-      document.body.appendChild(link);
+            builderId:
+              state.builderId,
 
-      link.click();
-
-      document.body.removeChild(link);
-
-      /*
-       * X POST TEXT
-       */
-
-      const text =
-        "I just created my HH Goa 2026 Builder Card! 🌴\n\n" +
-        "Create yours here → https://hh-builder-card.vercel.app/\n\n" +
-        "#FrameInGoa #HHGoa2026";
-
-      const xUrl =
-        `https://x.com/intent/post?text=${encodeURIComponent(
-          text
-        )}`;
-
-      /*
-       * Open X
-       */
-
-      setTimeout(() => {
-        window.location.href = xUrl;
-      }, 700);
-
-    } catch (error) {
-      console.error(
-        "Share error:",
-        error
+          }),
+        }
       );
 
-      alert(
-        "Unable to prepare your Builder Card."
-      );
+    const uploadData =
+      await uploadResponse.json();
 
-    } finally {
-      setSharing(false);
+    if (!uploadResponse.ok) {
+      throw new Error(
+        uploadData?.error ||
+        "Failed to upload Builder Card."
+      );
     }
+
+    const imageUrl =
+      uploadData.imageUrl;
+
+    if (!imageUrl) {
+      throw new Error(
+        "No image URL returned."
+      );
+    }
+
+    /*
+     * ==========================================
+     * 3. CREATE SHAREABLE PAGE URL
+     * ==========================================
+     */
+
+    const builderId =
+      encodeURIComponent(
+        state.builderId ||
+        "HH26-BUILDER"
+      );
+
+    const name =
+      encodeURIComponent(
+        state.formData?.name ||
+        "HH Goa Builder"
+      );
+
+    const shareUrl =
+      `${window.location.origin}/api/share` +
+      `?image=${encodeURIComponent(imageUrl)}` +
+      `&builderId=${builderId}` +
+      `&name=${name}`;
+
+    /*
+     * ==========================================
+     * 4. DOWNLOAD CARD AS BACKUP
+     * ==========================================
+     */
+
+    const fileName =
+      `${state.builderId || "HH-Goa-Builder-Card"}.png`;
+
+    const link =
+      document.createElement("a");
+
+    link.href = dataUrl;
+
+    link.download = fileName;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    /*
+     * ==========================================
+     * 5. CREATE PRE-FILLED X POST
+     * ==========================================
+     */
+
+    const text =
+      "I just created my HH Goa 2026 Builder Card! 🌴\n\n" +
+      "Create yours here → " +
+      "https://hh-builder-card.vercel.app/\n\n" +
+      "#FrameInGoa #HHGoa2026";
+
+    const xUrl =
+      `https://x.com/intent/post` +
+      `?text=${encodeURIComponent(text)}` +
+      `&url=${encodeURIComponent(shareUrl)}`;
+
+    /*
+     * ==========================================
+     * 6. OPEN X
+     * ==========================================
+     */
+
+    window.location.href = xUrl;
+
+  } catch (error) {
+    console.error(
+      "Share error:",
+      error
+    );
+
+    alert(
+      error?.message ||
+      "Unable to prepare your Builder Card."
+    );
+
+  } finally {
+    setSharing(false);
   }
+}
 
   return (
     <div
@@ -721,5 +800,4 @@ function BuilderCardPage() {
     </div>
   );
 }
-
 export default BuilderCardPage;
