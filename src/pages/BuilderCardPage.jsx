@@ -213,11 +213,14 @@ async function shareCard() {
      * ==========================================
      */
 
-    const text =
-      "I just created my HH Goa 2026 Builder Card! 🌴\n\n" +
-      "Create yours here → " +
-      "https://hh-builder-card.vercel.app/\n\n" +
-      "#FrameInGoa #HHGoa2026";
+
+      const text =
+        "I’m in the frame. Are you?\n\n" +
+        "Just created my HH Goa 2026 Builder ID.\n\n" +
+        "Ideas. People. Building. Goa.\n\n" +
+        "Create yours → https://hh-builder-card.vercel.app/\n\n" +
+        "#FrameInGoa #HHGoa2026"
+        " ";
 
     const xUrl =
       `https://x.com/intent/post` +
