@@ -20,7 +20,7 @@ function BuilderCard({
     >
 
       {/* =====================================================
-          BACKGROUND GRID
+          BASE GOA GRID
       ====================================================== */}
 
       <div
@@ -28,7 +28,7 @@ function BuilderCard({
           pointer-events-none
           absolute
           inset-0
-          opacity-[0.07]
+          opacity-[0.055]
         "
         style={{
           backgroundImage: `
@@ -39,34 +39,273 @@ function BuilderCard({
         }}
       />
 
-      {/* =====================================================
-          DECORATIVE SHAPES
-      ====================================================== */}
 
-      {/* Green ring */}
+      {/* =====================================================
+          GOA SUN
+      ====================================================== */}
 
       <div
         className="
           pointer-events-none
           absolute
-          -right-16
-          top-24
-          h-40
-          w-40
+          -right-8
+          top-[125px]
+          h-[115px]
+          w-[115px]
           rounded-full
-          border-[18px]
-          border-[#086B3C]/15
+          bg-[#F3E600]
+          opacity-90
         "
       />
 
-      {/* Pink circle */}
+      {/* Pink sunset layer */}
 
       <div
         className="
           pointer-events-none
           absolute
-          -left-10
-          top-[300px]
+          -right-2
+          top-[195px]
+          h-[55px]
+          w-[125px]
+          rounded-t-full
+          bg-[#FF087F]
+          opacity-25
+        "
+      />
+
+
+      {/* =====================================================
+          GOA PALM
+      ====================================================== */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          right-1
+          top-[115px]
+          z-[1]
+          h-[150px]
+          w-[90px]
+        "
+      >
+
+        {/* Palm trunk */}
+
+        <div
+          className="
+            absolute
+            right-[38px]
+            top-[42px]
+            h-[105px]
+            w-[7px]
+            rotate-[11deg]
+            rounded-full
+            bg-[#086B3C]
+          "
+        />
+
+        {/* Palm leaves */}
+
+        <div
+          className="
+            absolute
+            right-[27px]
+            top-[27px]
+            h-8
+            w-[62px]
+            rotate-[10deg]
+            rounded-[100%]
+            border-t-[7px]
+            border-[#086B3C]
+          "
+        />
+
+        <div
+          className="
+            absolute
+            right-[29px]
+            top-[22px]
+            h-8
+            w-[65px]
+            rotate-[-27deg]
+            rounded-[100%]
+            border-t-[7px]
+            border-[#086B3C]
+          "
+        />
+
+        <div
+          className="
+            absolute
+            right-[18px]
+            top-[31px]
+            h-8
+            w-[68px]
+            rotate-[37deg]
+            rounded-[100%]
+            border-t-[7px]
+            border-[#086B3C]
+          "
+        />
+
+        <div
+          className="
+            absolute
+            right-[42px]
+            top-[17px]
+            h-8
+            w-[65px]
+            rotate-[-55deg]
+            rounded-[100%]
+            border-t-[7px]
+            border-[#086B3C]
+          "
+        />
+
+        <div
+          className="
+            absolute
+            right-[10px]
+            top-[15px]
+            h-8
+            w-[62px]
+            rotate-[55deg]
+            rounded-[100%]
+            border-t-[7px]
+            border-[#086B3C]
+          "
+        />
+
+      </div>
+
+
+      {/* =====================================================
+          GOA SEA WAVES
+      ====================================================== */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-0
+          right-0
+          top-[270px]
+          z-[1]
+          h-[55px]
+          overflow-hidden
+        "
+      >
+
+        <div
+          className="
+            absolute
+            -left-[40px]
+            top-2
+            h-8
+            w-[440px]
+            rounded-[50%]
+            border-t-[5px]
+            border-[#086B3C]
+          "
+        />
+
+        <div
+          className="
+            absolute
+            -left-[70px]
+            top-6
+            h-8
+            w-[440px]
+            rounded-[50%]
+            border-t-[4px]
+            border-[#FF087F]
+          "
+        />
+
+        <div
+          className="
+            absolute
+            -left-[20px]
+            top-10
+            h-8
+            w-[430px]
+            rounded-[50%]
+            border-t-[3px]
+            border-[#086B3C]/40
+          "
+        />
+
+      </div>
+
+
+      {/* =====================================================
+          GOA TILE PATTERN
+      ====================================================== */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-[95px]
+          right-0
+          z-[0]
+          grid
+          grid-cols-4
+          opacity-60
+        "
+      >
+
+        {Array.from({ length: 16 }).map((_, index) => (
+          <div
+            key={index}
+            className={`
+              relative
+              h-5
+              w-5
+              border
+              border-[#086B3C]/20
+              ${
+                index % 3 === 0
+                  ? "bg-[#F3E600]/30"
+                  : index % 3 === 1
+                    ? "bg-[#FF087F]/10"
+                    : "bg-[#086B3C]/5"
+              }
+            `}
+          >
+            {index % 4 === 0 && (
+              <div
+                className="
+                  absolute
+                  left-1/2
+                  top-1/2
+                  h-2
+                  w-2
+                  -translate-x-1/2
+                  -translate-y-1/2
+                  rotate-45
+                  bg-[#086B3C]/30
+                "
+              />
+            )}
+          </div>
+        ))}
+
+      </div>
+
+
+      {/* =====================================================
+          GOA DECORATIVE CIRCLES
+      ====================================================== */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -left-12
+          top-[340px]
           h-24
           w-24
           rounded-full
@@ -74,20 +313,20 @@ function BuilderCard({
         "
       />
 
-      {/* Yellow circle */}
-
       <div
         className="
           pointer-events-none
           absolute
-          -right-8
-          bottom-24
-          h-20
-          w-20
+          -right-10
+          bottom-28
+          h-24
+          w-24
           rounded-full
-          bg-[#F3E600]/30
+          border-[12px]
+          border-[#086B3C]/10
         "
       />
+
 
       {/* =====================================================
           HACKERHOUSE TOP BAR
@@ -96,6 +335,7 @@ function BuilderCard({
       <div
         className="
           relative
+          z-10
           flex
           items-center
           justify-between
@@ -136,36 +376,16 @@ function BuilderCard({
 
         </div>
 
+
         {/* Status lights */}
 
         <div className="flex items-center gap-1.5">
 
-          <span
-            className="
-              h-2
-              w-2
-              rounded-full
-              bg-[#F3E600]
-            "
-          />
+          <span className="h-2 w-2 rounded-full bg-[#F3E600]" />
 
-          <span
-            className="
-              h-2
-              w-2
-              rounded-full
-              bg-[#FF087F]
-            "
-          />
+          <span className="h-2 w-2 rounded-full bg-[#FF087F]" />
 
-          <span
-            className="
-              h-2
-              w-2
-              rounded-full
-              bg-white
-            "
-          />
+          <span className="h-2 w-2 rounded-full bg-white" />
 
         </div>
 
@@ -173,12 +393,13 @@ function BuilderCard({
 
 
       {/* =====================================================
-          SYSTEM / TERMINAL STRIP
+          SYSTEM STRIP
       ====================================================== */}
 
       <div
         className="
           relative
+          z-10
           flex
           items-center
           justify-between
@@ -202,22 +423,9 @@ function BuilderCard({
           SYSTEM_STATUS
         </p>
 
-        <div
-          className="
-            flex
-            items-center
-            gap-1.5
-          "
-        >
+        <div className="flex items-center gap-1.5">
 
-          <span
-            className="
-              h-1.5
-              w-1.5
-              rounded-full
-              bg-[#F3E600]
-            "
-          />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#F3E600]" />
 
           <span
             className="
@@ -243,6 +451,7 @@ function BuilderCard({
       <div
         className="
           relative
+          z-10
           px-5
           pt-5
         "
@@ -257,54 +466,37 @@ function BuilderCard({
             text-[#FF087F]
           "
         >
-          GOA / INDIA
+          HACKERHOUSE / GOA / INDIA
         </p>
 
-        <div
-          className="
-            relative
-            mt-2
-          "
-        >
+
+        <div className="relative mt-2">
 
           <h1
             className="
-              text-[42px]
+              text-[45px]
               font-black
               uppercase
-              leading-[0.78]
-              tracking-[-0.07em]
+              leading-[0.76]
+              tracking-[-0.08em]
               text-[#086B3C]
             "
           >
-            HACKER
+            BUILD
           </h1>
 
           <h1
             className="
               ml-7
-              text-[42px]
+              text-[45px]
               font-black
               uppercase
-              leading-[0.78]
-              tracking-[-0.07em]
+              leading-[0.76]
+              tracking-[-0.08em]
               text-[#111111]
             "
           >
-            HOUSE
-          </h1>
-
-          <h1
-            className="
-              text-[42px]
-              font-black
-              uppercase
-              leading-[0.78]
-              tracking-[-0.07em]
-              text-[#FF087F]
-            "
-          >
-            GOA
+            IN GOA
           </h1>
 
           {/* Pink slash */}
@@ -312,33 +504,19 @@ function BuilderCard({
           <div
             className="
               absolute
-              right-10
+              right-12
               top-1
-              h-16
+              h-14
               w-4
               rotate-[25deg]
               bg-[#FF087F]
             "
           />
 
-          {/* Yellow circle */}
-
-          <div
-            className="
-              absolute
-              right-2
-              top-2
-              h-10
-              w-10
-              rounded-full
-              bg-[#F3E600]
-            "
-          />
-
         </div>
 
 
-        {/* Tagline */}
+        {/* Goa tagline */}
 
         <div
           className="
@@ -351,7 +529,7 @@ function BuilderCard({
 
           <div
             className="
-              h-[3px]
+              h-[4px]
               w-10
               bg-[#FF087F]
             "
@@ -366,7 +544,7 @@ function BuilderCard({
               text-[#111111]/60
             "
           >
-            LESS NOISE / MORE SIGNAL
+            SUN / SEA / BUILD
           </p>
 
         </div>
@@ -381,29 +559,19 @@ function BuilderCard({
       <div
         className="
           relative
+          z-10
           mt-5
           px-5
         "
       >
 
-        <div
-          className="
-            flex
-            items-center
-            gap-5
-          "
-        >
+        <div className="flex items-center gap-5">
 
           {/* PHOTO */}
 
-          <div
-            className="
-              relative
-              shrink-0
-            "
-          >
+          <div className="relative shrink-0">
 
-            {/* Yellow offset */}
+            {/* Yellow offset frame */}
 
             <div
               className="
@@ -416,7 +584,7 @@ function BuilderCard({
               "
             />
 
-            {/* Image */}
+            {/* Photo */}
 
             <div
               className="
@@ -434,11 +602,7 @@ function BuilderCard({
                 src={image}
                 alt="Builder"
                 crossOrigin="anonymous"
-                className="
-                  h-full
-                  w-full
-                  object-cover
-                "
+                className="h-full w-full object-cover"
               />
 
             </div>
@@ -463,13 +627,7 @@ function BuilderCard({
               "
             >
 
-              <span
-                className="
-                  text-[9px]
-                  font-black
-                  text-white
-                "
-              >
+              <span className="text-[9px] font-black text-white">
                 01
               </span>
 
@@ -478,7 +636,7 @@ function BuilderCard({
           </div>
 
 
-          {/* BUILDER INFORMATION */}
+          {/* BUILDER INFO */}
 
           <div className="min-w-0">
 
@@ -491,7 +649,20 @@ function BuilderCard({
                 text-[#FF087F]
               "
             >
-              BUILDER_IDENTITY
+              01 / BUILDER
+            </p>
+
+            <p
+              className="
+                mt-1
+                text-[6px]
+                font-black
+                uppercase
+                tracking-[0.25em]
+                text-[#086B3C]/60
+              "
+            >
+              GOA NETWORK MEMBER
             </p>
 
             <h2
@@ -529,8 +700,7 @@ function BuilderCard({
                 text-[#111111]/50
               "
             >
-              {formData.role ||
-                "BUILDER / CREATOR"}
+              {formData.role || "BUILDER / CREATOR"}
             </p>
 
           </div>
@@ -547,6 +717,7 @@ function BuilderCard({
       <div
         className="
           relative
+          z-10
           mx-5
           mt-5
           overflow-hidden
@@ -571,8 +742,6 @@ function BuilderCard({
             bg-[#F3E600]
           "
         />
-
-        {/* Small terminal text */}
 
         <p
           className="
@@ -611,8 +780,7 @@ function BuilderCard({
             text-white
           "
         >
-          {builderTitle ||
-            "BUILDER"}
+          {builderTitle || "BUILDER"}
         </h3>
 
       </div>
@@ -624,6 +792,8 @@ function BuilderCard({
 
       <div
         className="
+          relative
+          z-10
           mx-5
           mt-4
           grid
@@ -666,43 +836,26 @@ function BuilderCard({
               text-[#086B3C]
             "
           >
-            {formData.tech ||
-              "GOOD IDEAS"}
+            {formData.tech || "GOOD IDEAS"}
           </p>
 
-          <div
-            className="
-              mt-2
-              flex
-              gap-1
-            "
-          >
+          <div className="mt-2 flex gap-1">
 
-            <div
-              className="
-                h-1
-                w-5
-                bg-[#FF087F]
-              "
-            />
+            <div className="h-1 w-5 bg-[#FF087F]" />
 
-            <div
-              className="
-                h-1
-                w-2
-                bg-[#F3E600]
-              "
-            />
+            <div className="h-1 w-2 bg-[#F3E600]" />
 
           </div>
 
         </div>
 
 
-        {/* LOCATION */}
+        {/* GOA LOCATION */}
 
         <div
           className="
+            border-2
+            border-[#111111]
             bg-[#086B3C]
             px-3
             py-2.5
@@ -742,32 +895,14 @@ function BuilderCard({
               text-white/50
             "
           >
-            HH GOA 2026
+            HACKERHOUSE
           </p>
 
-          <div
-            className="
-              mt-2
-              flex
-              gap-1
-            "
-          >
+          <div className="mt-2 flex gap-1">
 
-            <div
-              className="
-                h-1
-                w-6
-                bg-[#F3E600]
-              "
-            />
+            <div className="h-1 w-6 bg-[#F3E600]" />
 
-            <div
-              className="
-                h-1
-                w-2
-                bg-[#FF087F]
-              "
-            />
+            <div className="h-1 w-2 bg-[#FF087F]" />
 
           </div>
 
@@ -777,11 +912,13 @@ function BuilderCard({
 
 
       {/* =====================================================
-          HACKERHOUSE DATA STRIP
+          GOA + HACKERHOUSE DATA STRIP
       ====================================================== */}
 
       <div
         className="
+          relative
+          z-10
           mx-5
           mt-4
           border-y-2
@@ -790,13 +927,7 @@ function BuilderCard({
         "
       >
 
-        <div
-          className="
-            flex
-            items-center
-            justify-between
-          "
-        >
+        <div className="flex items-center justify-between">
 
           <p
             className="
@@ -825,14 +956,36 @@ function BuilderCard({
         </div>
 
 
-        <div
-          className="
-            mt-1
-            flex
-            items-center
-            justify-between
-          "
-        >
+        <div className="mt-1 flex items-center justify-between">
+
+          <p
+            className="
+              text-[6px]
+              font-black
+              uppercase
+              tracking-[0.2em]
+              text-[#111111]/40
+            "
+          >
+            ENVIRONMENT
+          </p>
+
+          <p
+            className="
+              text-[6px]
+              font-black
+              uppercase
+              tracking-[0.2em]
+              text-[#FF087F]
+            "
+          >
+            SUN • SEA • BUILD
+          </p>
+
+        </div>
+
+
+        <div className="mt-1 flex items-center justify-between">
 
           <p
             className="
@@ -846,13 +999,7 @@ function BuilderCard({
             STATUS
           </p>
 
-          <div
-            className="
-              flex
-              items-center
-              gap-1.5
-            "
-          >
+          <div className="flex items-center gap-1.5">
 
             <span
               className="
@@ -888,6 +1035,8 @@ function BuilderCard({
 
       <div
         className="
+          relative
+          z-10
           mx-5
           mt-4
           flex
@@ -962,6 +1111,7 @@ function BuilderCard({
       <div
         className="
           relative
+          z-10
           mt-4
           flex
           items-center
@@ -975,7 +1125,7 @@ function BuilderCard({
         "
       >
 
-        {/* Pink vertical bar */}
+        {/* Pink vertical line */}
 
         <div
           className="
@@ -987,6 +1137,7 @@ function BuilderCard({
             bg-[#FF087F]
           "
         />
+
 
         <div>
 
@@ -1004,45 +1155,25 @@ function BuilderCard({
 
           <p
             className="
-              mt-0.5
+              mt-1
               text-[6px]
               font-bold
               uppercase
               tracking-[0.2em]
-              text-white/40
+              text-white/45
             "
           >
-            28—31 OCT 2026
+            SUN • SEA • BUILD
           </p>
 
         </div>
 
 
-        <div
-          className="
-            flex
-            items-center
-            gap-2
-          "
-        >
+        <div className="flex items-center gap-2">
 
-          <span
-            className="
-              h-2
-              w-2
-              rounded-full
-              bg-[#FF087F]
-            "
-          />
+          <span className="h-2 w-2 rounded-full bg-[#FF087F]" />
 
-          <span
-            className="
-              h-2
-              w-2
-              rounded-full
-              bg-[#F3E600]
-            "
-          />
+          <span className="h-2 w-2 rounded-full bg-[#F3E600]" />
 
           <p
             className="
