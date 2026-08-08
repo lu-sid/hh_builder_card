@@ -200,8 +200,7 @@ async function shareCard() {
       "Just created my HH Goa 2026 Builder ID.\n\n" +
       "Ideas. People. Building. Goa.\n\n" +
       "Create yours → https://hh-builder-card.vercel.app/\n\n" +
-      "#FrameInGoa #HHGoa2026\n\n" +
-      "Preview:" ;
+      "#FrameInGoa #HHGoa2026\n\n" ;
 
     /*
      * ==========================================
