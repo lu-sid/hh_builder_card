@@ -106,17 +106,13 @@ async function shareCard() {
   setSharing(true);
 
   try {
+    // Generate the actual Builder Card
     const dataUrl = await createCardImage();
 
     const fileName =
       `${state.builderId || "HH-Goa-Builder-Card"}.png`;
 
-    /*
-     * Automatically download the Builder Card.
-     * This makes the image available to the user
-     * before X opens.
-     */
-
+    // Download the card automatically
     const link = document.createElement("a");
 
     link.href = dataUrl;
@@ -126,28 +122,21 @@ async function shareCard() {
     link.click();
     document.body.removeChild(link);
 
-    /*
-     * X post text
-     */
-
+    // Text that will appear in X
     const text =
       "I just created my HH Goa 2026 Builder Card! 🌴\n\n" +
+      "Create yours here → https://hh-builder-card.vercel.app/\n\n" +
       "#FrameInGoa #HHGoa2026";
 
+    // Open X directly
     const xUrl =
       `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
 
-    /*
-     * Open X.
-     *
-     * On desktop this opens X in the browser.
-     * On mobile, the browser may hand the URL
-     * to the X app if the device/browser supports it.
-     */
-
+    // Give the browser a moment to start
+    // downloading the image first
     setTimeout(() => {
       window.location.href = xUrl;
-    }, 500);
+    }, 700);
 
   } catch (error) {
     console.error(
