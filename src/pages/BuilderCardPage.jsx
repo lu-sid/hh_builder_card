@@ -216,7 +216,7 @@ async function shareCard() {
 
       const text =
         "I’m in the frame. Are you?\n\n" +
-        "Just created my HH Goa 2026 Builder ID.\n\n" +
+        "Just created my HackerHouse Goa 2026 Builder ID.\n\n" +
         "Ideas. People. Building. Goa.\n\n" +
         "Create yours → https://hh-builder-card.vercel.app/\n\n" +
         "#FrameInGoa #HHGoa2026"
