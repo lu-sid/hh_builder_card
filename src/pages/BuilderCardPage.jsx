@@ -108,45 +108,13 @@ async function shareCard() {
   try {
     const dataUrl = await createCardImage();
 
-    const response = await fetch(dataUrl);
-    const blob = await response.blob();
-
     const fileName =
       `${state.builderId || "HH-Goa-Builder-Card"}.png`;
 
-    const file = new File(
-      [blob],
-      fileName,
-      {
-        type: "image/png",
-      }
-    );
-
-    const text =
-      "I just created my HH Goa 2026 Builder Card! 🌴\n\n#FrameInGoa #HHGoa2026";
-
     /*
-     * PHONE / BROWSER WITH FILE SHARING
-     */
-
-    if (
-      navigator.share &&
-      navigator.canShare &&
-      navigator.canShare({
-        files: [file],
-      })
-    ) {
-      await navigator.share({
-        title: "HH Goa 2026 Builder Card",
-        text,
-        files: [file],
-      });
-
-      return;
-    }
-
-    /*
-     * DESKTOP FALLBACK
+     * Automatically download the Builder Card.
+     * This makes the image available to the user
+     * before X opens.
      */
 
     const link = document.createElement("a");
@@ -159,25 +127,36 @@ async function shareCard() {
     document.body.removeChild(link);
 
     /*
-     * Give the browser time to start the download
-     * before opening X.
+     * X post text
+     */
+
+    const text =
+      "I just created my HH Goa 2026 Builder Card! 🌴\n\n" +
+      "#FrameInGoa #HHGoa2026";
+
+    const xUrl =
+      `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+
+    /*
+     * Open X.
+     *
+     * On desktop this opens X in the browser.
+     * On mobile, the browser may hand the URL
+     * to the X app if the device/browser supports it.
      */
 
     setTimeout(() => {
-      window.location.href =
-        `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+      window.location.href = xUrl;
     }, 500);
 
   } catch (error) {
-
-    if (error?.name === "AbortError") {
-      return;
-    }
-
-    console.error("Share error:", error);
+    console.error(
+      "Share error:",
+      error
+    );
 
     alert(
-      "Unable to share the Builder Card."
+      "Unable to prepare your Builder Card."
     );
 
   } finally {
