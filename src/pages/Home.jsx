@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import UploadBox from "../components/UploadBox";
 
 function Home() {
@@ -14,550 +13,865 @@ function Home() {
     tech: "",
   });
 
-  const builderTitles = [
-    "Idea Chaser",
-    "Wildcard",
-    "The Catalyst",
-    "Curious Mind",
-    "Bold Thinker",
-    "The Explorer",
-    "Creative Spark",
-    "The Connector",
-    "Possibility Seeker",
-    "Free Thinker",
-    "Vision Maker",
-    "The Experimenter",
-    "Thought Starter",
-    "Future Maker",
-    "Trailblazer",
-    "Change Maker",
-  ];
+  const [builderTitle, setBuilderTitle] = useState("");
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function generateBuilderClass() {
+    const classes = [
+      "IDEA MACHINE",
+      "SIGNAL FINDER",
+      "SHIP MODE",
+      "CURIOUS BUILDER",
+      "PROBLEM SOLVER",
+      "CHAOS ENGINEER",
+      "MIDNIGHT BUILDER",
+      "SYSTEM THINKER",
+      "PIXEL PUSHER",
+      "CODE ALCHEMIST",
+    ];
+
+    return classes[
+      Math.floor(
+        Math.random() * classes.length
+      )
+    ];
+  }
 
   function generateCard() {
     if (!image) {
-      alert("Please add a photo or take a selfie.");
+      alert("Add your photo first.");
       return;
     }
 
     if (!formData.name.trim()) {
-      alert("Please enter your name.");
+      alert("Tell us your name.");
       return;
     }
 
-    if (!formData.role.trim()) {
-      alert("Please enter your role.");
-      return;
-    }
-
-    const builderTitle =
-      builderTitles[
-        Math.floor(Math.random() * builderTitles.length)
-      ];
+    const title =
+      builderTitle ||
+      generateBuilderClass();
 
     const builderId =
-      "HH26-" + Math.floor(1000 + Math.random() * 9000);
+      "HH26-" +
+      Math.floor(
+        1000 + Math.random() * 9000
+      );
 
     navigate("/builder-card", {
       state: {
         image,
         formData,
-        builderTitle,
+        builderTitle: title,
         builderId,
       },
     });
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#F7F1DF]">
+    <div
+      className="
+        min-h-screen
+        bg-[#F7F1DF]
+        text-[#111111]
+      "
+    >
 
-      {/* =====================================================
-          BACKGROUND FUN ELEMENTS
-      ====================================================== */}
+      {/* ==================================================
+          TOP BAR
+      ================================================== */}
 
-      {/* Big yellow corner */}
-      <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#F3E600]" />
+      <header
+        className="
+          border-b-[3px]
+          border-[#111111]
+          bg-[#086B3C]
+          px-5
+          py-4
+          sm:px-8
+        "
+      >
 
-      {/* Pink blob */}
-      <div className="pointer-events-none absolute -left-32 top-[35%] h-80 w-80 rounded-full bg-[#FF087F]/10" />
+        <div
+          className="
+            mx-auto
+            flex
+            max-w-6xl
+            items-center
+            justify-between
+          "
+        >
 
-      {/* Green blob */}
-      <div className="pointer-events-none absolute -bottom-32 -right-20 h-96 w-96 rounded-full bg-[#086B3C]/10" />
-
-      {/* Pink slash */}
-      <div className="pointer-events-none absolute right-[13%] top-40 h-36 w-6 rotate-[25deg] bg-[#FF087F]" />
-
-      {/* Small green circle */}
-      <div className="pointer-events-none absolute left-[6%] top-[22%] h-12 w-12 rounded-full border-[8px] border-[#086B3C]" />
-
-      {/* Yellow square */}
-      <div className="pointer-events-none absolute bottom-[18%] left-[4%] h-8 w-8 rotate-12 bg-[#F3E600]" />
-
-      {/* Pink dot */}
-      <div className="pointer-events-none absolute right-[8%] bottom-[28%] h-5 w-5 rounded-full bg-[#FF087F]" />
-
-
-      {/* =====================================================
-          MAIN
-      ====================================================== */}
-
-      <main className="relative z-10 mx-auto w-full max-w-2xl px-5 py-8 sm:px-8 sm:py-12">
-
-
-        {/* =================================================
-            TOP BRANDING
-        ================================================== */}
-
-        <div className="mb-8 flex items-start justify-between">
+          {/* LOGO */}
 
           <div>
 
-            <p className="text-[11px] font-black uppercase tracking-[0.45em] text-[#FF087F]">
-              GOA / INDIA
-            </p>
+            <div
+              className="
+                text-xl
+                font-black
+                uppercase
+                tracking-[-0.04em]
+                text-white
+              "
+            >
+              HH GOA
+            </div>
 
-            <h1 className="mt-3 text-6xl font-black uppercase leading-[0.76] tracking-[-0.08em] text-[#086B3C] sm:text-7xl">
-              BUILD
-            </h1>
-
-            <h1 className="ml-7 mt-1 text-6xl font-black uppercase leading-[0.76] tracking-[-0.08em] text-[#111111] sm:text-7xl">
-              YOUR ID
-            </h1>
-
-          </div>
-
-
-          <div className="pt-1 text-right">
-
-            <p className="text-3xl font-black tracking-[-0.08em] text-[#111111]">
-              HH
-            </p>
-
-            <p className="mt-1 text-[10px] font-black uppercase tracking-[0.35em] text-[#086B3C]">
-              GOA 2026
-            </p>
-
-            <div className="relative mt-4 ml-auto h-10 w-10">
-
-              <div className="absolute inset-0 rounded-full bg-[#F3E600]" />
-
-              <div className="absolute left-2 top-2 h-6 w-6 rounded-full border-[3px] border-[#111111]" />
-
+            <div
+              className="
+                text-[8px]
+                font-black
+                uppercase
+                tracking-[0.35em]
+                text-[#F3E600]
+              "
+            >
+              HACKER HOUSE
             </div>
 
           </div>
 
-        </div>
+          {/* DATE */}
 
+          <div
+            className="
+              text-right
+              text-[9px]
+              font-black
+              uppercase
+              tracking-[0.18em]
+              text-white
+            "
+          >
+            <div>
+              GOA, INDIA
+            </div>
 
-        {/* =================================================
-            INTRO LINE
-        ================================================== */}
-
-        <div className="mb-7 flex items-center gap-3">
-
-          <div className="h-[5px] w-16 bg-[#FF087F]" />
-
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#111111]/60">
-            BUILD • CONNECT • CREATE
-          </p>
-
-          <div className="ml-auto flex gap-1">
-
-            <span className="h-3 w-3 rounded-full bg-[#086B3C]" />
-
-            <span className="h-3 w-3 rounded-full bg-[#FF087F]" />
-
-            <span className="h-3 w-3 rounded-full bg-[#F3E600]" />
-
+            <div className="text-[#F3E600]">
+              28—31 OCT 2026
+            </div>
           </div>
 
         </div>
 
+      </header>
 
-        {/* =================================================
-            FORM CARD
-        ================================================== */}
 
-        <div
+      {/* ==================================================
+          HERO
+      ================================================== */}
+
+      <main
+        className="
+          mx-auto
+          max-w-6xl
+          px-5
+          pb-16
+          pt-10
+          sm:px-8
+          sm:pt-16
+        "
+      >
+
+        <section
           className="
+            relative
             overflow-hidden
             border-[3px]
             border-[#111111]
             bg-[#F7F1DF]
-            shadow-[12px_12px_0_#086B3C]
+            shadow-[10px_10px_0_#086B3C]
           "
         >
 
-          {/* TOP BAR */}
+          {/* PINK BLOCK */}
 
-          <div className="relative flex items-center justify-between bg-[#086B3C] px-6 py-4">
+          <div
+            className="
+              absolute
+              right-0
+              top-0
+              h-28
+              w-8
+              bg-[#FF087F]
+            "
+          />
 
-            <div>
+          {/* YELLOW CIRCLE */}
 
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#F3E600]">
-                HH GOA
-              </p>
+          <div
+            className="
+              absolute
+              -right-12
+              top-20
+              h-40
+              w-40
+              rounded-full
+              bg-[#F3E600]
+            "
+          />
 
-              <p className="mt-1 text-[9px] font-black uppercase tracking-[0.25em] text-white/60">
-                BUILDER REGISTRATION / 2026
+          {/* HERO CONTENT */}
+
+          <div
+            className="
+              relative
+              z-10
+              px-6
+              py-10
+              sm:px-12
+              sm:py-14
+            "
+          >
+
+            <p
+              className="
+                text-[9px]
+                font-black
+                uppercase
+                tracking-[0.4em]
+                text-[#FF087F]
+              "
+            >
+              BUILDER ID / TASK #1
+            </p>
+
+
+            <h1
+              className="
+                mt-3
+                max-w-3xl
+                text-[clamp(3.5rem,10vw,7rem)]
+                font-black
+                uppercase
+                leading-[0.78]
+                tracking-[-0.07em]
+                text-[#086B3C]
+              "
+            >
+              BUILD
+              <br />
+
+              <span className="text-[#111111]">
+                YOUR
+              </span>
+
+              <br />
+
+              <span className="text-[#FF087F]">
+                IDENTITY.
+              </span>
+            </h1>
+
+
+            <div
+              className="
+                mt-8
+                flex
+                items-center
+                gap-3
+              "
+            >
+
+              <div
+                className="
+                  h-[5px]
+                  w-14
+                  bg-[#FF087F]
+                "
+              />
+
+              <p
+                className="
+                  text-xs
+                  font-black
+                  uppercase
+                  tracking-[0.2em]
+                  text-[#111111]
+                "
+              >
+                LESS NOISE. MORE SIGNAL.
               </p>
 
             </div>
 
 
-            {/* Decorative dots */}
-
-            <div className="flex gap-2">
-
-              <span className="h-3 w-3 rounded-full bg-[#F3E600]" />
-
-              <span className="h-3 w-3 rounded-full bg-[#FF087F]" />
-
-              <span className="h-3 w-3 rounded-full bg-white" />
-
-            </div>
+            <p
+              className="
+                mt-6
+                max-w-xl
+                text-sm
+                font-semibold
+                leading-relaxed
+                text-[#111111]/70
+              "
+            >
+              Create your own HH Goa 2026
+              Builder ID. Add your photo,
+              tell us what you're into,
+              and get your personalized
+              #FrameInGoa card.
+            </p>
 
           </div>
 
 
-          <div className="p-6 sm:p-8">
+          {/* BOTTOM STRIP */}
+
+          <div
+            className="
+              relative
+              flex
+              items-center
+              justify-between
+              border-t-[3px]
+              border-[#111111]
+              bg-[#FF087F]
+              px-6
+              py-3
+              text-white
+            "
+          >
+
+            <span
+              className="
+                text-[8px]
+                font-black
+                uppercase
+                tracking-[0.35em]
+              "
+            >
+              HH GOA 2026
+            </span>
+
+            <span
+              className="
+                text-[8px]
+                font-black
+                uppercase
+                tracking-[0.35em]
+              "
+            >
+              #FRAMEINGOA
+            </span>
+
+          </div>
+
+        </section>
 
 
-            {/* =================================================
-                PHOTO SECTION
-            ================================================== */}
+        {/* ==================================================
+            FORM
+        ================================================== */}
 
-            <section>
+        <section
+          className="
+            mt-12
+            grid
+            gap-8
+            lg:grid-cols-[1.1fr_0.9fr]
+          "
+        >
 
-              <div className="mb-4 flex items-end justify-between">
+          {/* ================================================
+              PHOTO
+          ================================================= */}
 
-                <div>
+          <div
+            className="
+              border-[3px]
+              border-[#111111]
+              bg-white
+              p-5
+              shadow-[8px_8px_0_#FF087F]
+            "
+          >
 
-                  <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#FF087F]">
-                    01 / PHOTO
-                  </p>
+            <div
+              className="
+                mb-4
+                flex
+                items-center
+                justify-between
+              "
+            >
 
-                  <h2 className="mt-1 text-3xl font-black uppercase leading-none tracking-[-0.04em] text-[#111111]">
-                    SHOW US YOU
-                  </h2>
+              <div>
 
-                </div>
-
-                <div className="hidden text-right sm:block">
-
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#111111]/40">
-                    SELFIE
-                  </p>
-
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#111111]/40">
-                    OR PHOTO
-                  </p>
-
-                </div>
-
-              </div>
-
-
-              {/* Photo box */}
-
-              <div className="border-2 border-[#111111] bg-white p-2 shadow-[5px_5px_0_#F3E600]">
-
-                <UploadBox
-                  image={image}
-                  setImage={setImage}
-                />
-
-              </div>
-
-            </section>
-
-
-            {/* =================================================
-                IDENTITY
-            ================================================== */}
-
-            <section className="mt-9">
-
-              <div className="mb-6">
-
-                <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#FF087F]">
-                  02 / IDENTITY
+                <p
+                  className="
+                    text-[8px]
+                    font-black
+                    uppercase
+                    tracking-[0.3em]
+                    text-[#FF087F]
+                  "
+                >
+                  01 / PHOTO
                 </p>
 
-                <h2 className="mt-1 text-3xl font-black uppercase leading-none tracking-[-0.04em] text-[#111111]">
-                  TELL US ABOUT YOU
+                <h2
+                  className="
+                    mt-1
+                    text-2xl
+                    font-black
+                    uppercase
+                    tracking-[-0.04em]
+                    text-[#086B3C]
+                  "
+                >
+                  SHOW US YOU
                 </h2>
 
               </div>
 
-
-              {/* NAME */}
-
-              <div className="mb-6">
-
-                <label className="mb-2 flex items-center gap-2">
-
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#086B3C] text-[9px] font-black text-white">
-                    01
-                  </span>
-
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#086B3C]">
-                    YOUR NAME
-                  </span>
-
-                </label>
-
-
-                <input
-                  type="text"
-                  placeholder="WHAT SHOULD WE CALL YOU?"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      name: e.target.value,
-                    })
-                  }
-                  className="
-                    w-full
-                    border-[3px]
-                    border-[#111111]
-                    bg-white
-                    px-4
-                    py-4
-                    text-base
-                    font-black
-                    uppercase
-                    tracking-wide
-                    text-[#111111]
-                    outline-none
-                    placeholder:text-[#111111]/25
-                    transition
-                    focus:border-[#FF087F]
-                    focus:shadow-[5px_5px_0_#F3E600]
-                  "
-                />
-
-              </div>
-
-
-              {/* ROLE */}
-
-              <div className="mb-6">
-
-                <label className="mb-2 flex items-center gap-2">
-
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FF087F] text-[9px] font-black text-white">
-                    02
-                  </span>
-
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#086B3C]">
-                    WHAT DO YOU DO?
-                  </span>
-
-                </label>
-
-
-                <input
-                  type="text"
-                  placeholder="STUDENT • CREATOR • DESIGNER • DREAMER"
-                  value={formData.role}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      role: e.target.value,
-                    })
-                  }
-                  className="
-                    w-full
-                    border-[3px]
-                    border-[#111111]
-                    bg-white
-                    px-4
-                    py-4
-                    text-base
-                    font-black
-                    uppercase
-                    tracking-wide
-                    text-[#111111]
-                    outline-none
-                    placeholder:text-[#111111]/25
-                    transition
-                    focus:border-[#FF087F]
-                    focus:shadow-[5px_5px_0_#F3E600]
-                  "
-                />
-
-              </div>
-
-
-              {/* INTEREST */}
-
-              <div>
-
-                <label className="mb-2 flex items-center gap-2">
-
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F3E600] text-[9px] font-black text-[#111111]">
-                    03
-                  </span>
-
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#086B3C]">
-                    WHAT ARE YOU INTO?
-                  </span>
-
-                </label>
-
-
-                <input
-                  type="text"
-                  placeholder="AI • MUSIC • DESIGN • IDEAS • FOOD • ANYTHING"
-                  value={formData.tech}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      tech: e.target.value,
-                    })
-                  }
-                  className="
-                    w-full
-                    border-[3px]
-                    border-[#111111]
-                    bg-white
-                    px-4
-                    py-4
-                    text-base
-                    font-black
-                    uppercase
-                    tracking-wide
-                    text-[#111111]
-                    outline-none
-                    placeholder:text-[#111111]/25
-                    transition
-                    focus:border-[#FF087F]
-                    focus:shadow-[5px_5px_0_#F3E600]
-                  "
-                />
-
-              </div>
-
-            </section>
-
-
-            {/* =================================================
-                RANDOM BUILDER NOTE
-            ================================================== */}
-
-            <div className="relative mt-8 overflow-hidden bg-[#F3E600] px-5 py-4">
-
-              <div className="absolute -right-3 -top-5 h-16 w-16 rotate-12 border-[5px] border-[#FF087F]" />
-
-              <p className="text-[9px] font-black uppercase tracking-[0.35em] text-[#111111]/60">
-                ONE CARD.
-              </p>
-
-              <p className="mt-1 text-xl font-black uppercase leading-none tracking-[-0.03em] text-[#111111]">
-                YOUR ENERGY.
-              </p>
+              <span
+                className="
+                  text-[8px]
+                  font-black
+                  uppercase
+                  tracking-[0.2em]
+                  text-[#111111]/40
+                "
+              >
+                SELFIE
+                <br />
+                OR PHOTO
+              </span>
 
             </div>
 
 
-            {/* =================================================
-                GENERATE BUTTON
-            ================================================== */}
+            <UploadBox
+              image={image}
+              setImage={setImage}
+            />
 
-            <button
-              type="button"
-              onClick={generateCard}
+          </div>
+
+
+          {/* ================================================
+              DETAILS
+          ================================================= */}
+
+          <div
+            className="
+              border-[3px]
+              border-[#111111]
+              bg-[#086B3C]
+              p-6
+              text-white
+              shadow-[8px_8px_0_#F3E600]
+            "
+          >
+
+            <p
               className="
-                group
-                relative
-                mt-6
-                w-full
-                overflow-hidden
-                bg-[#FF087F]
-                px-6
-                py-5
-                text-left
-                transition
-                hover:bg-[#086B3C]
-                active:translate-y-1
+                text-[8px]
+                font-black
+                uppercase
+                tracking-[0.3em]
+                text-[#F3E600]
               "
             >
+              02 / YOU
+            </p>
 
-              {/* Decorative circle */}
-
-              <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full border-[10px] border-[#F3E600]/70 transition-transform duration-300 group-hover:rotate-45" />
-
-
-              <div className="relative flex items-center justify-between">
-
-                <div>
-
-                  <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/60">
-                    READY?
-                  </p>
-
-                  <p className="mt-1 text-2xl font-black uppercase leading-none tracking-[-0.04em] text-white sm:text-3xl">
-                    GENERATE MY CARD
-                  </p>
-
-                </div>
+            <h2
+              className="
+                mt-1
+                text-3xl
+                font-black
+                uppercase
+                tracking-[-0.05em]
+              "
+            >
+              TELL US
+              <br />
+              WHO YOU ARE.
+            </h2>
 
 
-                <div className="text-4xl font-black text-[#F3E600] transition-transform duration-300 group-hover:translate-x-2">
-                  →
-                </div>
+            {/* NAME */}
 
-              </div>
+            <div className="mt-8">
 
-            </button>
+              <label
+                className="
+                  text-[9px]
+                  font-black
+                  uppercase
+                  tracking-[0.2em]
+                  text-white/70
+                "
+              >
+                YOUR NAME
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="ENTER YOUR NAME"
+                className="
+                  mt-2
+                  w-full
+                  border-b-[3px]
+                  border-[#F3E600]
+                  bg-transparent
+                  px-0
+                  py-3
+                  text-lg
+                  font-black
+                  uppercase
+                  text-white
+                  outline-none
+                  placeholder:text-white/30
+                  focus:border-[#FF087F]
+                "
+              />
+
+            </div>
 
 
-            {/* =================================================
-                BOTTOM META
-            ================================================== */}
+            {/* ROLE / IDENTITY */}
 
-            <div className="mt-6 flex items-center justify-between border-t-2 border-[#111111]/15 pt-4">
+            <div className="mt-7">
 
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#111111]/45">
-                HH GOA / 2026
-              </p>
+              <label
+                className="
+                  text-[9px]
+                  font-black
+                  uppercase
+                  tracking-[0.2em]
+                  text-white/70
+                "
+              >
+                YOUR THING
+              </label>
 
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#FF087F]">
-                #FRAMEINGOA
-              </p>
+              <input
+                type="text"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                placeholder="WHAT DO YOU BUILD?"
+                className="
+                  mt-2
+                  w-full
+                  border-b-[3px]
+                  border-[#F3E600]
+                  bg-transparent
+                  px-0
+                  py-3
+                  text-lg
+                  font-black
+                  uppercase
+                  text-white
+                  outline-none
+                  placeholder:text-white/30
+                  focus:border-[#FF087F]
+                "
+              />
+
+            </div>
+
+
+            {/* TECH */}
+
+            <div className="mt-7">
+
+              <label
+                className="
+                  text-[9px]
+                  font-black
+                  uppercase
+                  tracking-[0.2em]
+                  text-white/70
+                "
+              >
+                CURRENTLY INTO
+              </label>
+
+              <input
+                type="text"
+                name="tech"
+                value={formData.tech}
+                onChange={handleChange}
+                placeholder="AI / CODE / DESIGN / IDEAS..."
+                className="
+                  mt-2
+                  w-full
+                  border-b-[3px]
+                  border-[#F3E600]
+                  bg-transparent
+                  px-0
+                  py-3
+                  text-lg
+                  font-black
+                  uppercase
+                  text-white
+                  outline-none
+                  placeholder:text-white/30
+                  focus:border-[#FF087F]
+                "
+              />
 
             </div>
 
           </div>
 
-        </div>
+        </section>
 
 
-        {/* =================================================
-            FOOTER
+        {/* ==================================================
+            BUILDER CLASS
         ================================================== */}
 
-        <div className="mt-8 flex items-center justify-between">
+        <section
+          className="
+            mt-10
+            border-[3px]
+            border-[#111111]
+            bg-[#F3E600]
+            p-6
+            shadow-[8px_8px_0_#086B3C]
+          "
+        >
 
-          <p className="text-[9px] font-black uppercase tracking-[0.35em] text-[#111111]/45">
-            HACK • BUILD • CONNECT
+          <p
+            className="
+              text-[8px]
+              font-black
+              uppercase
+              tracking-[0.3em]
+              text-[#086B3C]
+            "
+          >
+            03 / YOUR SIGNAL
           </p>
 
-          <div className="flex items-center gap-1">
+          <h2
+            className="
+              mt-1
+              text-3xl
+              font-black
+              uppercase
+              tracking-[-0.05em]
+              text-[#111111]
+            "
+          >
+            WHAT'S YOUR
+            <br />
+            BUILDER ENERGY?
+          </h2>
 
-            <span className="h-3 w-8 bg-[#086B3C]" />
 
-            <span className="h-3 w-3 bg-[#FF087F]" />
+          <input
+            type="text"
+            value={builderTitle}
+            onChange={(e) =>
+              setBuilderTitle(
+                e.target.value
+              )
+            }
+            placeholder="LEAVE BLANK — LET US PICK"
+            className="
+              mt-5
+              w-full
+              border-[3px]
+              border-[#111111]
+              bg-[#F7F1DF]
+              px-4
+              py-4
+              text-sm
+              font-black
+              uppercase
+              text-[#111111]
+              outline-none
+              placeholder:text-[#111111]/30
+              focus:border-[#FF087F]
+            "
+          />
 
-            <span className="h-3 w-3 bg-[#F3E600]" />
+          <p
+            className="
+              mt-2
+              text-[9px]
+              font-bold
+              uppercase
+              tracking-[0.1em]
+              text-[#111111]/50
+            "
+          >
+            Leave this empty to get a
+            randomly generated builder class.
+          </p>
+
+        </section>
+
+
+        {/* ==================================================
+            GENERATE
+        ================================================== */}
+
+        <div
+          className="
+            mt-10
+            flex
+            flex-col
+            items-center
+          "
+        >
+
+          <button
+            type="button"
+            onClick={generateCard}
+            className="
+              w-full
+              max-w-lg
+              border-[3px]
+              border-[#111111]
+              bg-[#FF087F]
+              px-8
+              py-5
+              text-xl
+              font-black
+              uppercase
+              tracking-wide
+              text-white
+              shadow-[8px_8px_0_#086B3C]
+              transition
+              duration-200
+              hover:-translate-y-1
+              hover:bg-[#086B3C]
+              hover:shadow-[8px_8px_0_#FF087F]
+            "
+          >
+            BUILD MY HH GOA CARD →
+          </button>
+
+
+          <div
+            className="
+              mt-6
+              flex
+              items-center
+              gap-3
+            "
+          >
+
+            <span
+              className="
+                h-2
+                w-2
+                rounded-full
+                bg-[#086B3C]
+              "
+            />
+
+            <p
+              className="
+                text-[9px]
+                font-black
+                uppercase
+                tracking-[0.3em]
+                text-[#111111]/50
+              "
+            >
+              GOA / INDIA · HH GOA 2026
+            </p>
+
+            <span
+              className="
+                h-2
+                w-2
+                rounded-full
+                bg-[#FF087F]
+              "
+            />
 
           </div>
 
         </div>
 
       </main>
+
+
+      {/* ==================================================
+          FOOTER
+      ================================================== */}
+
+      <footer
+        className="
+          border-t-[3px]
+          border-[#111111]
+          bg-[#111111]
+          px-5
+          py-8
+          text-white
+        "
+      >
+
+        <div
+          className="
+            mx-auto
+            flex
+            max-w-6xl
+            flex-col
+            gap-3
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+          "
+        >
+
+          <p
+            className="
+              text-sm
+              font-black
+              uppercase
+              tracking-[0.15em]
+            "
+          >
+            HH GOA
+          </p>
+
+          <p
+            className="
+              text-[9px]
+              font-bold
+              uppercase
+              tracking-[0.3em]
+              text-[#F3E600]
+            "
+          >
+            LESS NOISE. MORE SIGNAL.
+          </p>
+
+          <p
+            className="
+              text-[9px]
+              font-bold
+              uppercase
+              tracking-[0.25em]
+              text-white/40
+            "
+          >
+            #FRAMEINGOA
+          </p>
+
+        </div>
+
+      </footer>
 
     </div>
   );
