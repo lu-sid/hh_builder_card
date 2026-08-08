@@ -13,6 +13,7 @@ function BuilderCardPage() {
   });
 
   const [downloading, setDownloading] = useState(false);
+  const [sharing, setSharing] = useState(false);
 
   function handleMouseMove(e) {
     setMouse({
@@ -25,15 +26,105 @@ function BuilderCardPage() {
     return <Navigate to="/" replace />;
   }
 
-function shareToX() {
-  const text =
-    "I just created my HH Goa 2026 Builder Card! 🌴\n\n#FrameInGoa";
+async function shareToX() {
+  console.log("🔥 SHARE BUTTON CLICKED");
 
-  const xUrl =
-    "https://twitter.com/intent/tweet?text=" +
-    encodeURIComponent(text);
+  const card = document.getElementById("builder-card");
 
-  window.open(xUrl, "_blank");
+  console.log("Card element:", card);
+
+  if (!card) {
+    alert("Builder card not found.");
+    return;
+  }
+
+  setSharing(true);
+
+  try {
+    console.log("📸 Creating card image...");
+
+    const dataUrl = await toPng(card, {
+      cacheBust: true,
+      pixelRatio: 2,
+      backgroundColor: "#F7F1DF",
+    });
+
+    console.log("✅ Card image created");
+
+    console.log("📡 Sending image to X API...");
+
+    const response = await fetch("/api/auth/x/post", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        image: dataUrl,
+        builderId: state.builderId,
+      }),
+    });
+
+    console.log("API status:", response.status);
+
+    const result = await response.json();
+
+    console.log("API response:", result);
+
+    /*
+     * User isn't connected to X.
+     */
+
+    if (
+      response.status === 401 ||
+      result.error === "X_NOT_CONNECTED"
+    ) {
+      console.log("➡️ Redirecting to X login...");
+
+      window.location.href = "/api/auth/x/login";
+
+      return;
+    }
+
+    /*
+     * API error
+     */
+
+    if (!response.ok) {
+      throw new Error(
+        result.error ||
+          "Something went wrong while posting to X."
+      );
+    }
+
+    /*
+     * SUCCESS
+     */
+
+    console.log("🎉 Posted successfully!");
+
+    if (result.postUrl) {
+      window.open(
+        result.postUrl,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+
+    alert("🎉 Your Builder Card was posted to X!");
+
+  } catch (error) {
+    console.error("❌ X sharing error:", error);
+
+    alert(
+      error.message ||
+        "Something went wrong while sharing on X."
+    );
+
+  } finally {
+    setSharing(false);
+  }
 }
 
   async function downloadCard() {
@@ -140,22 +231,32 @@ function shareToX() {
           </button>
 
           <button
-            onClick={shareToX}
-            className="
-              rounded-2xl
-              border-2
-              border-[#FF087F]
-              bg-white
-              py-4
-              text-lg
-              font-semibold
-              text-[#FF087F]
-              transition
-              hover:bg-pink-50
-            "
-                    >
-            Share on X
-          </button>
+  type="button"
+  onClick={shareToX}
+  disabled={sharing || downloading}
+  className="
+    rounded-2xl
+    border-[3px]
+    border-[#111111]
+    bg-[#FF087F]
+    py-4
+    text-lg
+    font-black
+    uppercase
+    tracking-wide
+    text-white
+    shadow-[5px_5px_0_#F3E600]
+    transition
+    hover:-translate-y-1
+    hover:bg-[#086B3C]
+    disabled:cursor-not-allowed
+    disabled:opacity-60
+  "
+>
+  {sharing
+    ? "POSTING TO X..."
+    : "SHARE MY CARD ON X →"}
+</button>
           
 
           <button
